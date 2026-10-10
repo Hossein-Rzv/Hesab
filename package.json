@@ -12,7 +12,8 @@
     "dev": "node --disable-warning=ExperimentalWarning --watch server.js",
     "build:exe": "node build/build-electron.cjs all",
     "build:setup": "\"C:/Program Files (x86)/Inno Setup 6/ISCC.exe\" build/installer/hesab.iss",
-    "start:desktop": "electron ."
+    "start:desktop": "electron .",
+    "check": "node check-all.cjs"
   },
   "devDependencies": {
     "@electron/rebuild": "^4.2.0",
