@@ -1,0 +1,1 @@
+{"kind":"persons","data":[{"person_id":2,"first_name":"reza","last_name":"karimi","company_name":"","debit":4000000,"credit":1000000,"balance":3000000,"count":2},{"person_id":1,"first_name":"ali","last_name":"mohammadi","company_name":"","debit":3000000,"credit":3000000,"balance":0,"count":2}],"count":2,"totalDebt":3000000,"totalCredit":0,"net":3000000}

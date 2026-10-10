@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Database
+data/*.db
+*.db
+
+# Build outputs
+dist/
+out/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Backups
+backups/
+
+# Electron
+.electron-builder.config.js
+server.log
+
+# User specific build artifacts
+build/icon.ico
+!build/installer/*
+
+# Temp files
+tmp/
+temp/

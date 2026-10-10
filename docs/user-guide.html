@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>راهنمای کاربر برنامه حساب</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --primary-light: #60a5fa;
+      --bg: #ffffff;
+      --bg-alt: #f8fafc;
+      --bg-card: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+      --radius: 12px;
+      --green: #10b981;
+      --red: #ef4444;
+      --orange: #f59e0b;
+      --purple: #8b5cf6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg-alt);
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    /* ---- Cover ---- */
+    .cover {
+      background: linear-gradient(135deg, #0b1220 0%, #1e3a5f 50%, #0b1220 100%);
+      color: white;
+      padding: 80px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(139,92,246,0.1) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-20px, -10px); }
+    }
+    .cover * { position: relative; z-index: 1; }
+    .cover-icon {
+      width: 100px; height: 100px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .cover h1 { font-size: 42px; font-weight: 900; margin-bottom: 12px; }
+    .cover p { font-size: 18px; opacity: 0.8; max-width: 600px; margin: 0 auto; }
+    .cover .version {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-top: 20px;
+      backdrop-filter: blur(5px);
+    }
+
+    /* ---- Layout ---- */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* ---- TOC ---- */
+    .toc {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+    .toc h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--primary);
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc;
+    }
+    .toc ol li {
+      counter-increment: toc;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .toc ol li:last-child { border-bottom: none; }
+    .toc ol li::before {
+      content: counter(toc) ".";
+      color: var(--primary);
+      font-weight: 700;
+      margin-left: 8px;
+    }
+    .toc a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .toc a:hover { color: var(--primary); }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section h2 .emoji { font-size: 28px; }
+    .section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 24px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--primary-light);
+      display: inline-block;
+    }
+    .section h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 16px 0 8px;
+      color: var(--text);
+    }
+    .section p { margin-bottom: 12px; color: var(--text); }
+    .section ul, .section ol {
+      margin: 8px 0 16px 24px;
+    }
+    .section li { margin-bottom: 6px; }
+
+    /* ---- Steps ---- */
+    .steps {
+      margin: 16px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .steps li {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .step-content { flex: 1; padding-top: 4px; }
+
+    /* ---- Tip/Warning boxes ---- */
+    .tip, .warning, .info {
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .tip {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+    .tip::before { content: '💡 نکته: '; font-weight: 700; }
+    .warning {
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+    .warning::before { content: '⚠️ هشدار: '; font-weight: 700; }
+    .info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+    }
+    .info::before { content: 'ℹ️ '; font-weight: 700; }
+
+    /* ---- Field table ---- */
+    .field-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 20px;
+      font-size: 14px;
+    }
+    .field-table th {
+      background: var(--primary);
+      color: white;
+      padding: 10px 14px;
+      text-align: right;
+      font-weight: 600;
+    }
+    .field-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .field-table tr:nth-child(even) td { background: var(--bg-alt); }
+    .field-table tr:hover td { background: #eff6ff; }
+
+    /* ---- UI Mock ---- */
+    .ui-mock {
+      background: #0b1220;
+      border-radius: 10px;
+      padding: 4px;
+      margin: 16px 0;
+      overflow: hidden;
+    }
+    .ui-mock-header {
+      background: #1e293b;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #94a3b8;
+      border-radius: 8px 8px 0 0;
+    }
+    .ui-mock-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+    .ui-mock-dot.r { background: #ef4444; }
+    .ui-mock-dot.y { background: #f59e0b; }
+    .ui-mock-dot.g { background: #10b981; }
+    .ui-mock-body {
+      background: #1e293b;
+      padding: 20px;
+      color: #e2e8f0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .ui-mock-nav {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .ui-mock-nav button {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: transparent;
+      color: #94a3b8;
+      font-family: inherit;
+      font-size: 12px;
+    }
+    .ui-mock-nav button.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .ui-mock-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .ui-mock-table th {
+      background: #334155;
+      padding: 6px 10px;
+      text-align: right;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .ui-mock-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #1e293b;
+      color: #cbd5e1;
+    }
+    .ui-mock-table tr:hover td { background: #334155; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-green { background: #065f46; color: #a7f3d0; }
+    .badge-red { background: #7f1d1d; color: #fca5a5; }
+    .badge-blue { background: #1e3a5f; color: #93c5fd; }
+
+    /* ---- Print ---- */
+    @media print {
+      body { background: white; font-size: 12px; }
+      .cover { padding: 40px 20px; }
+      .section { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+      .ui-mock { break-inside: avoid; }
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 640px) {
+      .cover { padding: 48px 20px; }
+      .cover h1 { font-size: 28px; }
+      .container { padding: 20px 12px; }
+      .section { padding: 24px 16px; }
+    }
+
+    /* ---- Keyboard shortcut ---- */
+    kbd {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-family: monospace;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      box-shadow: 0 1px 0 #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== COVER ========== -->
+<div class="cover">
+  <div class="cover-icon">📒</div>
+  <h1>راهنمای کاربر برنامه حساب</h1>
+  <p>مدیریت اشخاص، فاکتورها و پرداخت‌ها</p>
+  <span class="version">نسخه ۱.۰.۰</span>
+</div>
+
+<div class="container">
+
+<!-- ========== TOC ========== -->
+<div class="toc">
+  <h2>📑 فهرست مطالب</h2>
+  <ol>
+    <li><a href="#install">نصب و راه‌اندازی</a></li>
+    <li><a href="#dashboard">داشبورد</a></li>
+    <li><a href="#people">مدیریت اشخاص</a></li>
+    <li><a href="#invoices">مدیریت فاکتورها</a></li>
+    <li><a href="#payments">مدیریت پرداخت‌ها</a></li>
+    <li><a href="#reports">گزارش‌گیری</a></li>
+    <li><a href="#settings">تنظیمات</a></li>
+    <li><a href="#backup">نسخه‌پشتیبان</a></li>
+    <li><a href="#tips">نکات و ترفندها</a></li>
+  </ol>
+</div>
+
+<!-- ========== 1. INSTALL ========== -->
+<div class="section" id="install">
+  <h2><span class="emoji">📦</span> ۱. نصب و راه‌اندازی</h2>
+
+  <h3>پیش‌نیازها</h3>
+  <ul>
+    <li>سیستم‌عامل ویندوز ۷، ۸، ۸.۱، ۱۰ یا ۱۱</li>
+    <li>حداقل ۴ گیگابایت رم</li>
+    <li>حداقل ۵۰۰ مگابایت فضای خالی دیسک</li>
+  </ul>
+
+  <h3>روش نصب</h3>
+  <ol class="steps">
+    <li>
+      <span class="step-num">۱</span>
+      <span class="step-content">فایل نصب <strong>HesabSetup.exe</strong> را اجرا کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۲</span>
+      <span class="step-content">در صفحه خوش‌آمدگویی، روی <strong>بعدی</strong> کلیک کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۳</span>
+      <span class="step-content">محل نصب برنامه را انتخاب کنید. پیش‌فرض: <code>%LOCALAPPDATA%\Programs\Hesab</code><br>می‌توانید آن را به Program Files یا هر مسیر دیگری تغییر دهید.</span>
+    </li>
+    <li>
+      <span class="step-num">۴</span>
+      <span class="step-content">گزینه <strong>ایجاد میانبر روی دسکتاپ</strong> را فعال نگه دارید.</span>
+    </li>
+    <li>
+      <span class="step-num">۵</span>
+      <span class="step-content">روی <strong>نصب</strong> کلیک کنید و منتظر بمانید.</span>
+    </li>
+    <li>
+      <span class="step-num">۶</span>
+      <span class="step-content">پس از اتمام نصب، برنامه به صورت خودکار اجرا می‌شود. میانبر <strong>حساب</strong> روی دسکتاپ و منوی استارت ایجاد شده است.</span>
+    </li>
+  </ol>
+
+  <div class="tip">نسخه ۳۲ بیتی ویندوز فقط نسخه ۳۲ بیتی برنامه (HesabSetup-ia32.exe) را اجرا کند. نسخه ۶۴ بیتی ویندوز هر دو نسخه را پشتیبانی می‌کند.</div>
+
+  <h3>اجرای مجدد</h3>
+  <p>برای اجرای برنامه، روی میانبر <strong>حساب</strong> روی دسکتاپ یا در منوی استارت کلیک کنید. اگر برنامه از قبل باز باشد، فقط پنجره آن جلو می‌آید.</p>
+</div>
+
+<!-- ========== 2. DASHBOARD ========== -->
+<div class="section" id="dashboard">
+  <h2><span class="emoji">🏠</span> ۲. داشبورد</h2>
+
+  <p>صفحه اصلی برنامه پس از باز شدن، داشبورد را نمایش می‌دهد. داشبورد شامل خلاصه‌ای سریع از وضعیت مالی شماست:</p>
+
+  <div class="ui-mock">
+    <div class="ui-mock-header">
+      <span class="ui-mock-dot r"></span>
+      <span class="ui-mock-dot y"></span>
+      <span class="ui-mock-dot g"></span>
+      <span style="margin-right:auto">حساب — داشبورد</span>
+    </div>
+    <div class="ui-mock-body">
+      <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-bottom:16px;">
+        <div style="background:#1e3a5f; padding:12px; border-radius:8px; text-align:center;">
+          <div style="color:#93c5fd; font-size:11px;">تعداد اشخاص</div>
+          <div style="font-size:24px; font-weight:700;">۱۲</div>
+        </div>
+        <div style="background:#065f46; padding:12px; border-radius:8px; text-align:center;">
+          <div style="color:#a7f3d0; font-size:11px;">تعداد فاکتورها</div>
+          <div style="font-size:۲۴px; font-weight:700;">۲۸</div>
+        </div>
+        <div style="background:#7f1d1d; padding:12px; border-radius:8px; text-align:center;">
+          <div style="color:#fca5a5; font-size:11px;">تعداد پرداخت‌ها</div>
+          <div style="font-size:24px; font-weight:700;">۱۵</div>
+        </div>
+      </div>
+      <div style="font-size:13px; color:#94a3b8;">
+        ▸ جدول بدهکاری/بستانکاری اشخاص<br>
+        ▸ آخرین فاکتورها<br>
+        ▸ آخرین پرداخت‌ها
+      </div>
+    </div>
+  </div>
+
+  <h3>بخش‌های داشبورد</h3>
+  <ul>
+    <li><strong>کارت‌های خلاصه:</strong> تعداد کل اشخاص، فاکتورها و پرداخت‌ها</li>
+    <li><strong>بدهکاری/بستانکاری:</strong> جدولی از اشخاصی که شرکت به آن‌ها بدهکار یا بستانکار است (با دکمه «مشاهده همه» برای رفتن به گزارش کامل)</li>
+    <li><strong>آخرین فاکتورها:</strong> فاکتورهای اخیر با امکان مشاهده جزئیات</li>
+    <li><strong>آخرین پرداخت‌ها:</strong> پرداخت‌های اخیر</li>
+  </ul>
+</div>
+
+<!-- ========== 3. PEOPLE ========== -->
+<div class="section" id="people">
+  <h2><span class="emoji">👥</span> ۳. مدیریت اشخاص</h2>
+
+  <p>در این بخش می‌توانید اطلاعات مشتریان، تأمین‌کنندگان و سایر اشخاص مرتبط با کسب‌وکار خود را مدیریت کنید.</p>
+
+  <h3>مشاهده لیست اشخاص</h3>
+  <p>با کلیک روی <strong>اشخاص</strong> در منوی کناری، لیست تمام اشخاص نمایش داده می‌شود. از نوار جستجو در بالای جدول می‌توانید بر اساس نام، نام خانوادگی، کد ملی یا هر فیلد دیگری جستجو کنید.</p>
+
+  <h3>افزودن شخص جدید</h3>
+  <ol class="steps">
+    <li>
+      <span class="step-num">۱</span>
+      <span class="step-content">روی دکمه <strong>+ شخص جدید</strong> کلیک کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۲</span>
+      <span class="step-content">اطلاعات شخص را در فرم وارد کنید (فیلدهای الزامی: نام).</span>
+    </li>
+    <li>
+      <span class="step-num">۳</span>
+      <span class="step-content">روی <strong>ذخیره</strong> کلیک کنید.</span>
+    </li>
+  </ol>
+
+  <h3>فیلدهای اطلاعاتی شخص</h3>
+  <table class="field-table">
+    <thead>
+      <tr><th>فیلد</th><th>توضیح</th><th>الزامی</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>نام</td><td>نام شخص</td><td>✅</td></tr>
+      <tr><td>نام خانوادگی</td><td>نام خانوادگی شخص</td><td>❌</td></tr>
+      <tr><td>کد ملی</td><td>شماره ملی ۱۰ رقمی</td><td>❌</td></tr>
+      <tr><td>نام شرکت</td><td>در صورت داشتن شرکت</td><td>❌</td></tr>
+      <tr><td>کد اقتصادی شرکت</td><td>کد اقتصادی ۱۲ رقمی</td><td>❌</td></tr>
+      <tr><td>شناسه ملی شرکت</td><td>شناسه ملی شخصیت حقوقی</td><td>❌</td></tr>
+      <tr><td>تلفن</td><td>تلفن ثابت</td><td>❌</td></tr>
+      <tr><td>موبایل</td><td>شماره موبایل</td><td>❌</td></tr>
+      <tr><td>آدرس</td><td>آدرس کامل</td><td>❌</td></tr>
+      <tr><td>کدپستی</td><td>کدپستی ۱۰ رقمی</td><td>❌</td></tr>
+      <tr><td>شماره کارت بانکی</td><td>شماره کارت</td><td>❌</td></tr>
+      <tr><td>شماره حساب بانکی</td><td>شماره حساب</td><td>❌</td></tr>
+      <tr><td>شماره شبا</td><td>شماره شبا بانکی</td><td>❌</td></tr>
+      <tr><td>نام بانک</td><td>نام بانک</td><td>❌</td></tr>
+      <tr><td>توضیحات</td><td>توضیحات تکمیلی</td><td>❌</td></tr>
+    </tbody>
+  </table>
+
+  <h3>ویرایش و حذف</h3>
+  <ul>
+    <li><strong>ویرایش:</strong> روی آیکون ✏️ در ردیف مورد نظر کلیک کنید.</li>
+    <li><strong>حذف:</strong> روی آیکون 🗑️ در ردیف مورد نظر کلیک کنید و تأیید کنید.</li>
+  </ul>
+
+  <div class="warning">اگر شخصی فاکتور یا پرداخت داشته باشد، امکان حذف آن وجود ندارد تا اطلاعات مالی حفظ شود.</div>
+
+  <h3>منوی راست‌کلیک</h3>
+  <p>با راست‌کلیک روی ردیف هر شخص، گزینه‌های زیر در دسترس است:</p>
+  <ul>
+    <li><strong>ثبت فاکتور جدید:</strong> فرم فاکتور با اطلاعات این شخص باز می‌شود</li>
+    <li><strong>ثبت پرداخت جدید:</strong> فرم پرداخت با اطلاعات این شخص باز می‌شود</li>
+    <li><strong>گزارش فاکتورها:</strong> گزارش فاکتورهای این شخص در مودال باز می‌شود</li>
+    <li><strong>گزارش مانده حساب:</strong> گزارش تفصیلی مانده حساب این شخص</li>
+  </ul>
+</div>
+
+<!-- ========== 4. INVOICES ========== -->
+<div class="section" id="invoices">
+  <h2><span class="emoji">🧾</span> ۴. مدیریت فاکتورها</h2>
+
+  <p>فاکتورها شامل فاکتورهای خرید و فروش هستند. فاکتور پیش‌فرض از نوع <strong>خرید</strong> است.</p>
+
+  <h3>مشاهده لیست فاکتورها</h3>
+  <p>در بالای جدول فاکتورها، فیلترهای <strong>همه</strong>، <strong>خرید</strong> و <strong>فروش</strong> قرار دارد. با کلیک روی هر گزینه، فاکتورها بر اساس نوع فیلتر می‌شوند. گزینه انتخاب‌شده با رنگ متفاوت نمایش داده می‌شود.</p>
+
+  <h3>ثبت فاکتور جدید</h3>
+  <ol class="steps">
+    <li>
+      <span class="step-num">۱</span>
+      <span class="step-content">روی دکمه <strong>+ فاکتور جدید</strong> کلیک کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۲</span>
+      <span class="step-content"><strong>فروشنده:</strong> شناسه فروشنده را وارد کنید. اگر شناسه را نمی‌دانید، روی دکمه <strong>انتخاب</strong> کلیک کنید و از لیست باز شده شخص مورد نظر را پیدا کنید. با تایپ در کادر جستجوی لیست، اشخاص فیلتر می‌شوند.</span>
+    </li>
+    <li>
+      <span class="step-num">۳</span>
+      <span class="step-content"><strong>نوع فاکتور:</strong> خرید یا فروش را انتخاب کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۴</span>
+      <span class="step-content"><strong>شماره فاکتور:</strong> در صورت وجود وارد کنید (اختیاری).</span>
+    </li>
+    <li>
+      <span class="step-num">۵</span>
+      <span class="step-content"><strong>تاریخ فاکتور:</strong> تاریخ شمسی را وارد کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۶</span>
+      <span class="step-content"><strong>اقلام فاکتور:</strong> برای هر قلم کالا اطلاعات زیر را وارد کنید و روی <strong>افزودن قلم</strong> کلیک کنید:
+        <ul>
+          <li>نام کالا</li>
+          <li>تعداد</li>
+          <li>واحد (عدد، کیلوگرم، متر و...)</li>
+          <li>قیمت واحد</li>
+          <li>جمع قیمت (خودکار محاسبه می‌شود)</li>
+        </ul>
+      </span>
+    </li>
+    <li>
+      <span class="step-num">۷</span>
+      <span class="step-content"><strong>جمع اقلام:</strong> مجموع قیمت اقلام به صورت خودکار نمایش داده می‌شود.</span>
+    </li>
+    <li>
+      <span class="step-num">۸</span>
+      <span class="step-content"><strong>تخفیف:</strong> مبلغ تخفیف را وارد کنید (در صورت وجود).</span>
+    </li>
+    <li>
+      <span class="step-num">۹</span>
+      <span class="step-content"><strong>ارزش افزوده:</strong> روی دکمه <strong>🔄 محاسبه خودکار</strong> کلیک کنید تا مالیات بر اساس درصد تنظیم‌شده در تنظیمات (پیش‌فرض ۱۰٪) محاسبه شود. همچنین می‌توانید مبلغ را به صورت دستی تغییر دهید.</span>
+    </li>
+    <li>
+      <span class="step-num">۱۰</span>
+      <span class="step-content"><strong>جمع کل:</strong> مبلغ نهایی = جمع اقلام − تخفیف + ارزش افزوده (خودکار).</span>
+    </li>
+    <li>
+      <span class="step-num">۱۱</span>
+      <span class="step-content">روی <strong>ذخیره</strong> کلیک کنید.</span>
+    </li>
+  </ol>
+
+  <h3>مشاهده و چاپ فاکتور</h3>
+  <p>برای مشاهده جزئیات فاکتور، روی ردیف مورد نظر کلیک کنید. فرم جزئیات در قالب مودال باز می‌شود. دکمه <strong>چاپ</strong> در فرم جزئیات، نسخه چاپی فاکتور را تولید می‌کند.</p>
+
+  <h3>مانده فاکتور</h3>
+  <p>در لیست فاکتورها، <strong>مانده فاکتور</strong> نمایش داده می‌شود (مبلغ کل فاکتور منهای مبلغ پرداخت‌شده). با راست‌کلیک روی ردیف و انتخاب <strong>تسویه مانده</strong>، فرم پرداخت با مبلغ مانده باز می‌شود تا تسویه انجام شود.</p>
+
+  <div class="tip">هنگام تسویه مانده فاکتور، می‌توانید مشخص کنید چه کسی مبلغ را پرداخت می‌کند (شرکت یا شخص دیگر).</div>
+
+  <h3>منوی راست‌کلیک</h3>
+  <ul>
+    <li><strong>مشاهده جزئیات:</strong> فرم جزئیات فاکتور باز می‌شود</li>
+    <li><strong>تسویه مانده:</strong> فرم پرداخت جدید با مبلغ مانده باز می‌شود</li>
+    <li><strong>گزارش فاکتورهای شخص:</strong> گزارش فاکتورهای فروشنده در مودال</li>
+  </ul>
+</div>
+
+<!-- ========== 5. PAYMENTS ========== -->
+<div class="section" id="payments">
+  <h2><span class="emoji">💰</span> ۵. مدیریت پرداخت‌ها</h2>
+
+  <p>پرداخت‌ها شامل دریافت (واریز از شخص به شرکت) و پرداخت (پرداخت شرکت به شخص) هستند.</p>
+
+  <h3>ثبت پرداخت جدید</h3>
+  <ol class="steps">
+    <li>
+      <span class="step-num">۱</span>
+      <span class="step-content">روی دکمه <strong>+ پرداخت جدید</strong> کلیک کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۲</span>
+      <span class="step-content"><strong>شخص:</strong> شناسه شخص دریافت/پرداخت‌کننده را وارد کنید یا از لیست انتخاب کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۳</span>
+      <span class="step-content"><strong>نوع تراکنش:</strong> دریافت (money in) یا پرداخت (money out) را انتخاب کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۴</span>
+      <span class="step-content"><strong>نوع انتقال:</strong> از لیست کشویی نوع انتقال را انتخاب کنید: نقدی، چک، حواله، کارت به کارت، پایا، ساتنا، پوز، صیادی، قسطی، سایر</span>
+    </li>
+    <li>
+      <span class="step-num">۵</span>
+      <span class="step-content"><strong>مبلغ:</strong> مبلغ تراکنش را وارد کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۶</span>
+      <span class="step-content"><strong>تاریخ:</strong> تاریخ تراکنش (شمسی) را وارد کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۷</span>
+      <span class="step-content"><strong>فاکتور مرتبط (اختیاری):</strong> اگر این پرداخت بابت فاکتور خاصی است، شناسه فاکتور را وارد کنید. با این کار، مبلغ پرداخت‌شده از مانده فاکتور کم می‌شود.</span>
+    </li>
+    <li>
+      <span class="step-num">۸</span>
+      <span class="step-content">روی <strong>ذخیره</strong> کلیک کنید.</span>
+    </li>
+  </ol>
+
+  <h3>مفهوم دریافت و پرداخت</h3>
+  <div class="info">
+    <strong>دریافت:</strong> شخصی به شرکت پول می‌دهد. حساب شخص بستانکار و حساب شرکت بدهکار می‌شود.<br>
+    <strong>پرداخت:</strong> شرکت به شخصی پول می‌دهد. حساب شخص بدهکار و حساب شرکت بستانکار می‌شود.
+  </div>
+
+  <h3>منوی راست‌کلیک</h3>
+  <ul>
+    <li><strong>مشاهده جزئیات:</strong> فرم جزئیات پرداخت باز می‌شود</li>
+    <li><strong>گزارش تراکنش‌های شخص:</strong> گزارش تمام تراکنش‌های مرتبط با این شخص</li>
+    <li><strong>ویرایش:</strong> ویرایش اطلاعات پرداخت</li>
+  </ul>
+</div>
+
+<!-- ========== 6. REPORTS ========== -->
+<div class="section" id="reports">
+  <h2><span class="emoji">📊</span> ۶. گزارش‌گیری</h2>
+
+  <p>بخش گزارش‌ها شامل دو تب اصلی است:</p>
+
+  <h3>تب ۱: گزارش فاکتورها و پرداخت‌ها</h3>
+  <p>در این تب می‌توانید تمام تراکنش‌ها (فاکتورهای خرید، فاکتورهای فروش، پرداخت‌ها و دریافت‌ها) را مشاهده کنید.</p>
+
+  <h4>فیلترها</h4>
+  <ul>
+    <li><strong>بازه تاریخی:</strong> تاریخ شروع و پایان را مشخص کنید و روی <strong>اعمال فیلتر</strong> کلیک کنید.</li>
+    <li><strong>انتخاب شخص:</strong> از لیست کشویی شخص مورد نظر را انتخاب کنید. فیلتر به صورت خودکار اعمال می‌شود. برای حذف فیلتر، گزینه «همه اشخاص» را انتخاب کنید.</li>
+    <li><strong>نوع تراکنش:</strong> همه، فاکتور خرید، فاکتور فروش، پرداخت، دریافت</li>
+  </ul>
+
+  <div class="tip">در لیست کشویی اشخاص، با تایپ در کادر جستجو می‌توانید شخص مورد نظر را پیدا کنید. با هر بار باز کردن لیست، جستجو خالی است.</div>
+
+  <h4>مشاهده جزئیات</h4>
+  <p>با <strong>دوبار کلیک</strong> روی ردیف مورد نظر، فرم جزئیات مرتبط (فاکتور یا پرداخت) در قالب مودال باز می‌شود. امکان ویرایش نیز در صورت نیاز وجود دارد.</p>
+
+  <h4>چاپ و خروجی اکسل</h4>
+  <ul>
+    <li><strong>چاپ:</strong> روی دکمه <strong>چاپ گزارش</strong> کلیک کنید تا نسخه چاپی تولید شود.</li>
+    <li><strong>خروجی اکسل:</strong> روی دکمه <strong>خروجی اکسل</strong> کلیک کنید تا فایل Excel دانلود شود.</li>
+  </ul>
+
+  <h3>تب ۲: مانده حساب اشخاص</h3>
+  <p>در این تب مانده حساب تمام اشخاص (بدهکاری/بستانکاری) نمایش داده می‌شود.</p>
+
+  <h4>ستون‌های جدول</h4>
+  <table class="field-table">
+    <thead>
+      <tr><th>ستون</th><th>توضیح</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>شخص</td><td>نام و نام خانوادگی</td></tr>
+      <tr><td>جمع فاکتورها</td><td>مجموع مبالغ فاکتورهای مرتبط با شخص</td></tr>
+      <tr><td>جمع پرداخت‌ها</td><td>مجموع پرداخت‌های دریافتی/پرداخت‌شده</td></tr>
+      <tr><td>مانده</td><td>تفاوت فاکتورها و پرداخت‌ها (بدهکار یا بستانکار)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>گزارش تفصیلی</h4>
+  <p>با <strong>دوبار کلیک</strong> روی ردیف هر شخص، گزارش تفصیلی آن شخص در مودال باز می‌شود. این گزارش شامل:</p>
+  <ul>
+    <li>تمام فاکتورها و پرداخت‌های شخص به تفکیک تاریخ</li>
+    <li>مانده ابتدای بازه (در صورت انتخاب بازه تاریخی)</li>
+    <li>جمع پرداخت‌ها و دریافت‌ها</li>
+    <li>مانده نهایی</li>
+  </ul>
+
+  <div class="info">ترتیب نمایش ردیف‌ها به صورت نزولی (جدیدترین در بالا) است تا مانده نهایی همواره در ردیف اول قابل مشاهده باشد. مانده ابتدای بازه در ردیف آخر جدول نمایش داده می‌شود.</div>
+
+  <h4>منوی راست‌کلیک در گزارش‌ها</h4>
+  <ul>
+    <li><strong>مشاهده اطلاعات شخص:</strong> فرم اطلاعات شخص در مودال باز می‌شود</li>
+    <li><strong>مشاهده فاکتور/پرداخت:</strong> فرم جزئیات رکورد انتخاب‌شده</li>
+    <li><strong>ثبت فاکتور جدید:</strong> فرم فاکتور جدید برای این شخص</li>
+    <li><strong>ثبت پرداخت جدید:</strong> فرم پرداخت جدید برای این شخص</li>
+  </ul>
+</div>
+
+<!-- ========== 7. SETTINGS ========== -->
+<div class="section" id="settings">
+  <h2><span class="emoji">⚙️</span> ۷. تنظیمات</h2>
+
+  <p>در بخش تنظیمات می‌توانید تنظیمات کلی برنامه را تغییر دهید:</p>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>تنظیم</th><th>پیش‌فرض</th><th>توضیح</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>واحد پول</td><td>ریال</td><td>واحد پول پیش‌فرض برای نمایش مبالغ</td></tr>
+      <tr><td>درصد مالیات ارزش افزوده</td><td>۱۰٪</td><td>درصد مالیات برای محاسبه خودکار در فاکتورها</td></tr>
+      <tr><td>پشتیبان‌گیری خودکار</td><td>غیرفعال</td><td>فعال‌سازی پشتیبان‌گیری خودکار در فواصل زمانی مشخص</td></tr>
+      <tr><td>فواصل پشتیبان (روز)</td><td>۱</td><td>هر چند روز یکبار پشتیبان خودکار گرفته شود</td></tr>
+      <tr><td>نام شرکت</td><td>خالی</td><td>نام شرکت شما</td></tr>
+      <tr><td>شماره ثبت شرکت</td><td>خالی</td><td>شماره ثبت در مرجع ثبت شرکت‌ها</td></tr>
+      <tr><td>کد اقتصادی شرکت</td><td>خالی</td><td>کد اقتصادی ۱۲ رقمی</td></tr>
+      <tr><td>تلفن شرکت</td><td>خالی</td><td>تلفن تماس شرکت</td></tr>
+      <tr><td>آدرس شرکت</td><td>خالی</td><td>آدرس کامل شرکت</td></tr>
+      <tr><td>انواع انتقال</td><td>نقدی، چک، حواله، ...</td><td>لیست انواع انتقالات قابل انتخاب در فرم پرداخت</td></tr>
+      <tr><td>مسیر پشتیبان</td><td>مسیر پیش‌فرض</td><td>مسیر ذخیره‌سازی فایل‌های پشتیبان</td></tr>
+    </tbody>
+  </table>
+
+  <h3>انتخاب مسیر پشتیبان</h3>
+  <p>روی دکمه <strong>انتخاب پوشه…</strong> کلیک کنید و مسیر مورد نظر را انتخاب کنید.</p>
+  <div class="warning">مسیر پشتیبان را در درایو نصب ویندوز (C:\Program Files) قرار ندهید. از درایو دیگری (مانند D:\ یا E:\) استفاده کنید تا در صورت نصب مجدد ویندوز، پشتیبان‌ها حفظ شوند.</div>
+
+  <h3>تغییر تم (روش/تاریک)</h3>
+  <p>در نوار بالای برنامه، آیکون 🌙/☀️ برای تغییر بین حالت روشن و تاریک قرار دارد.</p>
+</div>
+
+<!-- ========== 8. BACKUP ========== -->
+<div class="section" id="backup">
+  <h2><span class="emoji">💾</span> ۸. نسخه‌پشتیبان</h2>
+
+  <h3>پشتیبان‌گیری دستی</h3>
+  <ol class="steps">
+    <li>
+      <span class="step-num">۱</span>
+      <span class="step-content">به بخش <strong>تنظیمات</strong> بروید.</span>
+    </li>
+    <li>
+      <span class="step-num">۲</span>
+      <span class="step-content">در بخش پشتیبان‌گیری، روی دکمه <strong>ایجاد پشتیبان</strong> کلیک کنید.</span>
+    </li>
+    <li>
+      <span class="step-num">۳</span>
+      <span class="step-content">فایل پشتیبان با فرمت <code>.db</code> در مسیر تعیین‌شده ذخیره می‌شود.</span>
+    </li>
+  </ol>
+
+  <h3>پشتیبان‌گیری خودکار</h3>
+  <p>در بخش تنظیمات، گزینه <strong>پشتیبان‌گیری خودکار</strong> را فعال کنید و فاصله زمانی (بر حسب روز) را مشخص کنید. برنامه به صورت دوره‌ای نسخه پشتیبان تهیه می‌کند.</p>
+
+  <h3>بازیابی از پشتیبان</h3>
+  <ol class="steps">
+    <li>
+      <span class="step-num">۱</span>
+      <span class="step-content">فایل پشتیبان (<code>.db</code>) را در مسیر پوشه داده برنامه قرار دهید و نام آن را به <code>hesab.db</code> تغییر دهید.</span>
+    </li>
+    <li>
+      <span class="step-num">۲</span>
+      <span class="step-content">برنامه را ببندید و دوباره اجرا کنید.</span>
+    </li>
+  </ol>
+
+  <div class="warning">هنگام بازیابی از پشتیبان، اطلاعات فعلی برنامه با محتوای فایل پشتیبان جایگزین می‌شود. ابتدا از اطلاعات فعلی پشتیبان تهیه کنید.</div>
+
+  <div class="tip">لیست نسخه‌های پشتیبان در بخش تنظیمات قابل مشاهده است. داده‌های کاربر هنگام حذف نصب برنامه حذف نمی‌شوند.</div>
+</div>
+
+<!-- ========== 9. TIPS ========== -->
+<div class="section" id="tips">
+  <h2><span class="emoji">💡</span> ۹. نکات و ترفندها</h2>
+
+  <h3>انتخابگر (Picker)</h3>
+  <p>در فرم‌های مختلف (فاکتور، پرداخت و...) هرگاه نیاز به انتخاب یک شخص یا فاکتور داشتید، دو راه وجود دارد:</p>
+  <ul>
+    <li><strong>شماره شناسه:</strong> شماره را مستقیماً در کادر وارد کنید — سایر اطلاعات به صورت خودکار بارگذاری می‌شود.</li>
+    <li><strong>دکمه انتخاب:</strong> روی دکمه «انتخاب» کلیک کنید — لیستی با قابلیت جستجو باز می‌شود. با تایپ نام یا شناسه، لیست فیلتر می‌شود. با کلیک روی ردیف مورد نظر، اطلاعات در فرم اصلی پر می‌شود.</li>
+    <li><strong>افزودن جدید:</strong> اگر شخص مورد نظر در لیست نبود، دکمه «+ شخص جدید» در فرم انتخابگر وجود دارد.</li>
+  </ul>
+
+  <h3>منوی راست‌کلیک</h3>
+  <p>در بخش‌های مختلف برنامه، راست‌کلیک روی ردیف‌های جدول منویی با گزینه‌های مرتبط نمایش می‌دهد. فرم‌های باز شده از منوی راست‌کلیک همیشه به صورت <strong>مودال</strong> (پنجره روی صفحه فعلی) هستند و از صفحه جاری خارج نمی‌شوید.</p>
+
+  <h3>جستجو در لیست‌ها</h3>
+  <p>در لیست کشویی اشخاص (در گزارش‌ها و فرم‌ها)، با تایپ در کادر جستجو، اشخاص به صورت بلادرنگ فیلتر می‌شوند. با هر بار باز شدن لیست، جستجو خالی است.</p>
+
+  <h3>چاپ</h3>
+  <ul>
+    <li><strong>چاپ فاکتور:</strong> از فرم جزئیات فاکتور، دکمه چاپ را بزنید</li>
+    <li><strong>چاپ گزارش:</strong> از صفحه گزارش‌ها، دکمه چاپ گزارش را بزنید</li>
+  </ul>
+  <p>پیش‌نمایش چاپ در مرورگر باز می‌شود. می‌توانید آن را به عنوان PDF ذخیره کنید یا به چاپگر ارسال دهید.</p>
+
+  <h3>واحد پول</h3>
+  <p>واحد پول پیش‌فرض «ریال» است. می‌توانید آن را در تنظیمات به «تومان» یا هر واحد دیگری تغییر دهید.</p>
+
+  <h3>منوی حساب‌داری</h3>
+  <p>برنامه بر اساس اصطلاحات حسابداری استاندارد کار می‌کند:</p>
+  <ul>
+    <li><strong>فاکتور خرید:</strong> شرکت کالا یا خدماتی خریداری می‌کند. فروشنده بستانکار می‌شود.</li>
+    <li><strong>فاکتور فروش:</strong> شرکت کالا یا خدماتی می‌فروشد. خریدار بدهکار می‌شود.</li>
+    <li><strong>پرداخت:</strong> شرکت به شخصی پول پرداخت می‌کند.</li>
+    <li><strong>دریافت:</strong> شخصی به شرکت پول پرداخت می‌کند.</li>
+  </ul>
+  <div class="info">حساب شرکت به صورت خودکار مدیریت می‌شود. تمام تراکنش‌ها روی حساب شرکت اعمال می‌شوند و در نهایت مشخص است شرکت به هر شخص چقدر بدهکار یا بستانکار است.</div>
+</div>
+
+<!-- ========== Footer ========== -->
+<div style="text-align:center; padding:40px 0 20px; color:var(--text-muted); font-size:13px;">
+  <p>نسخه ۱.۰.۰ — برنامه حساب (Hesab)</p>
+  <p>مدیریت اشخاص، فاکتورها و پرداخت‌ها</p>
+  <p style="margin-top:12px; font-size:11px; opacity:0.6;">تاریخ تهیه: مرداد ۱۴۰۵</p>
+</div>
+
+</div>
+</body>
+</html>

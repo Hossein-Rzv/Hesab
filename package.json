@@ -1,0 +1,29 @@
+{
+  "name": "hesab-desk",
+  "version": "1.0.0",
+  "description": "برنامه مدیریت اشخاص، فاکتورها و پرداخت‌ها — وب اپلیکیشن کاملاً محلی با SQLite و بدون وابستگی خارجی",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch server.js",
+    "build:exe": "node build/build-electron.cjs all",
+    "build:setup": "\"C:/Program Files (x86)/Inno Setup 6/ISCC.exe\" build/installer/hesab.iss",
+    "start:desktop": "electron ."
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "electron": "^22.3.27",
+    "electron-packager": "^17.1.2"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0"
+  },
+  "allowScripts": {
+    "better-sqlite3@9.6.0": true,
+    "electron@22.3.27": true
+  }
+}

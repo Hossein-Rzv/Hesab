@@ -1,0 +1,12 @@
+{
+  "name": "hesab",
+  "productName": "حساب",
+  "version": "1.0.0",
+  "description": "برنامه مدیریت اشخاص، فاکتورها و پرداخت‌ها",
+  "main": "electron-main.cjs",
+  "author": "Hesab",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "11.10.0"
+  }
+}
