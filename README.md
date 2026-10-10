@@ -8,7 +8,7 @@
 ## سرور HowTo
 
 1. `node server.js`  
-   آدم μικρότερα: `node --disable-warning=ExperimentalWarning server.js`  
+   `node --disable-warning=ExperimentalWarning server.js`  
 2. http://localhost:3000
 
 پیش‌فرض: پورت ۳۰۰۰; در صورت اشغال بودن چک کن `server.log` یا تغییر پورت در کد.
